@@ -1,0 +1,230 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>MBN</title>  
+
+<style>  
+    * {  
+        margin: 0;  
+        padding: 0;  
+        box-sizing: border-box;  
+    }  
+
+    body {  
+        background: #000;  
+        color: white;  
+        font-family: Arial, sans-serif;  
+        overflow: hidden;  
+    }  
+
+    .hero {  
+        height: 100vh;  
+        width: 100%;  
+        display: flex;  
+        justify-content: center;  
+        align-items: center;  
+        position: relative;  
+        background:  
+            radial-gradient(circle at center, #063d18, #000 65%);  
+    }  
+
+    /* Green glow */  
+    .glow {  
+        position: absolute;  
+        width: 250px;  
+        height: 250px;  
+        background: #00ff55;  
+        filter: blur(120px);  
+        opacity: 0.25;  
+        animation: glow 2s infinite alternate;  
+    }  
+
+    @keyframes glow {  
+        from {  
+            transform: scale(0.8);  
+            opacity: 0.15;  
+        }  
+
+        to {  
+            transform: scale(1.4);  
+            opacity: 0.35;  
+        }  
+    }  
+
+    /* Text section */  
+    .content {  
+        text-align: center;  
+        position: relative;  
+        z-index: 2;  
+    }  
+
+    .mbn {  
+        font-size: 90px;  
+        font-weight: 900;  
+        letter-spacing: 10px;  
+        color: #00ff55;  
+        text-shadow:  
+            0 0 10px #00ff55,  
+            0 0 30px #00ff55,  
+            0 0 60px #00ff55;  
+
+        opacity: 0;  
+        transform: scale(0.5);  
+        animation: showMBN 1.5s ease forwards;  
+        animation-delay: 2s;  
+    }  
+
+    .tagline {  
+        font-size: 25px;  
+        letter-spacing: 5px;  
+        margin-top: 10px;  
+
+        opacity: 0;  
+        transform: translateY(30px);  
+        animation: showTagline 1s ease forwards;  
+        animation-delay: 3.2s;  
+    }  
+
+    @keyframes showMBN {  
+        to {  
+            opacity: 1;  
+            transform: scale(1);  
+        }  
+    }  
+
+    @keyframes showTagline {  
+        to {  
+            opacity: 1;  
+            transform: translateY(0);  
+        }  
+    }  
+
+    
+
+    /* Dark overlay */  
+    .overlay {  
+        position: absolute;  
+        inset: 0;  
+        background: linear-gradient(  
+            to bottom,  
+            rgba(0,0,0,0.8),  
+            rgba(0,50,20,0.4),  
+            rgba(0,0,0,0.9)  
+        );  
+        z-index: 1;  
+    }  
+  .page2 {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    overflow: hidden;
+}
+
+.photo-wrap {
+  position: relative;
+    width: 320px;
+    height: 320px;
+    border-radius: 20px;
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(0.6) translateY(80px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    box-shadow: 0 0 40px rgba(0,255,85,0.4);
+}
+
+.photo-wrap.show {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+  .photo-wrap img {
+    position: relative;
+    z-index: 1;
+}
+
+.name-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #00ff55, 0 0 20px #00ff55;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+    z-index: 2;
+}
+
+.photo-wrap.show .name-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.photo-wrap::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    z-index: 1;
+    pointer-events: none;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow: auto; /* age overflow: hidden chilo, eta change korte hobe scroll er jonno */
+}
+</style>
+
+</head>  <body>  <section class="hero">  
+
+    <div class="glow"></div>  
+
+  
+
+    <div class="overlay"></div>  
+
+    <div class="content">  
+        <div class="mbn">MBN.</div>  
+        <div class="tagline">Who hits different.</div>  
+    </div>  
+
+</section>
+  <section class="page2">
+    <div class="photo-wrap" id="photoWrap">
+        <img src="IMG_20260911_151211~2.jpg" alt="MBN">
+      <div class="name-overlay">Md. Mubin Hossain</div>
+    </div>
+  </section>
+  <script>
+    const photo = document.getElementById('photoWrap');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                photo.classList.add('show');
+            }
+        });
+    }, { threshold: 0.3 });
+    observer.observe(photo);
+  </script>
+
+</body>  
+</html>
