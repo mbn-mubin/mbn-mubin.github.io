@@ -70,8 +70,8 @@
 
         opacity: 0;  
         transform: scale(0.5);  
-        animation: showMBN 1.5s ease forwards;  
-        animation-delay: 2s;  
+        animation: showMBN 0.5s ease forwards;  
+        animation-delay: 0.3s;  
     }  
 
     .tagline {  
@@ -82,7 +82,7 @@
         opacity: 0;  
         transform: translateY(30px);  
         animation: showTagline 1s ease forwards;  
-        animation-delay: 3.2s;  
+        animation-delay: 1s;  
     }  
 
     @keyframes showMBN {  
@@ -192,9 +192,48 @@ html {
 body {
     overflow: auto; /* age overflow: hidden chilo, eta change korte hobe scroll er jonno */
 }
+  #intro {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.6s ease;
+}
+#intro.hide { opacity: 0; pointer-events: none; }
+#introVideo { width: 100%; height: 100%; object-fit: contain; background: #000; }
+#startBtn {
+    display: none;
+    padding: 14px 34px;
+    background: transparent;
+    color: #00ff55;
+    border: 2px solid #00ff55;
+    border-radius: 50px;
+    font-size: 18px;
+    letter-spacing: 3px;
+    box-shadow: 0 0 20px rgba(227, 6, 22, 0.5019607843137255);
+}
+#intro.blocked #introVideo { display: none; }
+#intro.blocked #startBtn { display: block; }
+  
+.hero:not(.start) .glow,
+.hero:not(.start) .mbn,
+.hero:not(.start) .tagline {
+    animation-play-state: paused;
+}
 </style>
 
-</head>  <body>  <section class="hero">  
+</head>  <body>
+  <div id="intro">
+    <video id="introVideo" src="xyz.mp4" playsinline preload="auto"></video>
+    <button id="startBtn">Tap to start</button>
+  </div>
+  <section class="hero">  
 
     <div class="glow"></div>  
 
@@ -224,6 +263,40 @@ body {
         });
     }, { threshold: 0.3 });
     observer.observe(photo);
+  </script>
+  <script>
+(function () {
+    var intro = document.getElementById('intro');
+    var video = document.getElementById('introVideo');
+    var startBtn = document.getElementById('startBtn');
+    var hero = document.querySelector('.hero');
+    var done = false;
+
+    function endIntro() {
+        if (done) return;
+        done = true;
+        intro.classList.add('hide');
+        window.scrollTo(0, 0);
+        hero.classList.add('start');
+        setTimeout(function () { intro.style.display = 'none'; }, 700);
+    }
+
+  
+    var p = video.play();
+    if (p && p.catch) {
+        p.catch(function () { intro.classList.add('blocked'); });
+    }
+
+    
+    startBtn.addEventListener('click', function () {
+        intro.classList.remove('blocked');
+        var q = video.play();
+        if (q && q.catch) q.catch(endIntro);
+    });
+
+    video.addEventListener('ended', endIntro);  // video শেষ -> তোমার পেজ
+    video.addEventListener('error', endIntro);  // video না পেলে সরাসরি পেজ
+})();
   </script>
 
 </body>  
